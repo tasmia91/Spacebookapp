@@ -8,20 +8,22 @@ import {
   useColorScheme,
   View,
 } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import globalStyles from './src/styles/globalStyles';
+import LoginScreen from './src/screens/authModule/loginScreen';
+import { AuthStackScreens } from './src/components/stacks/authStack';
+
 
 const App = () => {
   return (
-    <View style={styles.practiceSheet}>
-      <Text>Hello</Text>
-    </View>
+    <NavigationContainer>
+      <View style={globalStyles.container}>
+        <AuthStackScreens />
+      </View>
+    </NavigationContainer>
   );
 };
 
-const styles = StyleSheet.create({
-  practiceSheet: {
-    backgroundColor: 'red',
-    flex: 1,
-  },
-});
+
 
 export default App;
