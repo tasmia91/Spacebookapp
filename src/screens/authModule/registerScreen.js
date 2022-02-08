@@ -14,25 +14,35 @@ import {
 import globalStyles from '../../styles/globalStyles';
 import {colors} from '../../colors/colors';
 
-const LoginScreen = ({navigation}) => {
+const RegisterScreen = ({navigation}) => {
   return (
     <View style={[globalStyles.container, styles.localContainer]}>
       <View style={styles.headerWrapper}>
         <Image
-          source={require('../../images/astronaut-3.png')}
+          source={require('../../images/space.jpeg')}
           resizeMode={'contain'}
           style={{
             height: hp(8),
             width: hp(8),
           }}
         />
-        <Text style={styles.headerTitle}>SpaceBook</Text>
+        <Text style={styles.headerTitle}>Register</Text>
       </View>
 
       <View style={styles.formWrapper}>
-        {/* Username */}
+        {/* First name */}
         <View style={styles.fieldWrapper}>
-          <Text style={styles.label}>Username</Text>
+          <Text style={styles.label}>First Name</Text>
+          <TextInput placeholder="Tasmia" />
+        </View>
+        {/* Last Name */}
+        <View style={[styles.fieldWrapper, {paddingTop: hp(2)}]}>
+          <Text style={styles.label}>Last Name</Text>
+          <TextInput placeholder="Niazi" />
+        </View>
+        {/* Email */}
+        <View style={[styles.fieldWrapper, {paddingTop: hp(2)}]}>
+          <Text style={styles.label}>Email</Text>
           <TextInput placeholder="tasmia@hotmail.com" />
         </View>
         {/* Password */}
@@ -41,17 +51,14 @@ const LoginScreen = ({navigation}) => {
           <TextInput placeholder="*****" secureTextEntry={true} />
         </View>
       </View>
+
       <View>
-        <TouchableOpacity activeOpacity={0.5} style={styles.loginButton}>
-          <Text style={styles.loginText}>Login</Text>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('LoginScreen')}
+          activeOpacity={0.5}
+          style={styles.registerButton}>
+          <Text style={styles.registerText}>Register</Text>
         </TouchableOpacity>
-        <View style={styles.wrapper}>
-          <Text style={styles.text}>Don't have an account?</Text>
-          <TouchableOpacity
-            onPress={() => navigation.navigate('RegisterScreen')}>
-            <Text style={styles.RegisterText}> Register!</Text>
-          </TouchableOpacity>
-        </View>
       </View>
     </View>
   );
@@ -62,26 +69,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: wp(4),
     justifyContent: 'space-evenly',
   },
-  wrapper: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    marginTop: hp(2),
-  },
-  text: {
-    fontWeight: 'bold',
-  },
-  RegisterText: {
-    fontWeight: 'bold',
-    color: colors.pink,
-  },
-  loginText: {
+  registerText: {
     textAlign: 'center',
     fontFamily: 'Roboto',
     fontWeight: 'bold',
     color: colors.white,
     fontSize: hp(2),
   },
-  loginButton: {
+  registerButton: {
     backgroundColor: colors.blue,
     paddingVertical: hp(1.2),
     borderRadius: hp(1.8),
@@ -110,4 +105,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LoginScreen;
+export default RegisterScreen;

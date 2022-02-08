@@ -9,28 +9,30 @@ import {
 } from 'react-native';
 // stack navigator
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import { getFocusedRouteNameFromRoute } from '@react-navigation/native'
+import {getFocusedRouteNameFromRoute} from '@react-navigation/native';
 import LoginScreen from '../../screens/authModule/loginScreen';
-import SignupScreen from '../../screens/authModule/signupScreen';
+import SplashScreen from '../../screens/authModule/splashScreen';
+import RegisterScreen from '../../screens/authModule/registerScreen';
 const AuthStack = createNativeStackNavigator();
 
- export const AuthStackScreens = ({ navigation, route }) => {
-    
+export const AuthStackScreens = ({navigation, route}) => {
   return (
     <AuthStack.Navigator>
+      {/* <AuthStack.Screen
+        name="SplashScreen"
+        component={SplashScreen}
+        options={{headerShown: false}}
+      /> */}
       <AuthStack.Screen
         name="LoginScreen"
         component={LoginScreen}
         options={{headerShown: false}}
-          />
-          <AuthStack.Screen
-        name="SignupScreen"
-        component={SignupScreen}
+      />
+      <AuthStack.Screen
+        name="RegisterScreen"
+        component={RegisterScreen}
         options={{headerShown: false}}
       />
     </AuthStack.Navigator>
   );
 };
-
-
-
