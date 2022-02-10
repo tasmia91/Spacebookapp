@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   TouchableOpacity,
   StyleSheet,
@@ -13,8 +13,36 @@ import {
 } from 'react-native-responsive-screen';
 import globalStyles from '../../styles/globalStyles';
 import {colors} from '../../colors/colors';
+import {loginApi} from '../../API/api';
 
 const LoginScreen = ({navigation}) => {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [emailError, setEmailError] = useState('');
+
+  const login = async () => {
+    if (username && password && !emailError) {
+      setError('');
+      const apiData = {
+        email: username,
+        password: password,
+      };
+      try {
+        const {data} = await loginApi(apiData);
+        console.log(data);
+      } catch (e) {
+        setError(e.response.data);
+      }
+    } else {
+      if (!emailError) {
+        setError('Please fill in both fields');
+      }
+    }
+  };
+  setTimeout(() => {
+    setError('');
+  }, 5000);
   return (
     <View style={[globalStyles.container, styles.localContainer]}>
       <View style={styles.headerWrapper}>
@@ -30,19 +58,47 @@ const LoginScreen = ({navigation}) => {
       </View>
 
       <View style={styles.formWrapper}>
+        {error ? <Text style={globalStyles.errorLine}>* {error}</Text> : null}
+        {emailError ? (
+          <Text style={globalStyles.errorLine}>* {emailError}</Text>
+        ) : null}
         {/* Username */}
         <View style={styles.fieldWrapper}>
           <Text style={styles.label}>Username</Text>
-          <TextInput placeholder="tasmia@hotmail.com" />
+          <TextInput
+            placeholder="tasmia@hotmail.com"
+            defaultValue={username}
+            onChangeText={username => {
+              let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
+              if (reg.test(username) === false) {
+                setEmailError('Please enter a valid email');
+              } else if (username == '') {
+                setEmailError('');
+              } else {
+                setEmailError('');
+                setUsername(username);
+              }
+            }}
+          />
         </View>
         {/* Password */}
         <View style={[styles.fieldWrapper, {paddingTop: hp(2)}]}>
           <Text style={styles.label}>Password</Text>
-          <TextInput placeholder="*****" secureTextEntry={true} />
+          <TextInput
+            placeholder="*****"
+            defaultValue={password}
+            onChangeText={password => {
+              setPassword(password);
+            }}
+            secureTextEntry={true}
+          />
         </View>
       </View>
       <View>
-        <TouchableOpacity activeOpacity={0.5} style={styles.loginButton}>
+        <TouchableOpacity
+          onPress={() => login()}
+          activeOpacity={0.5}
+          style={styles.loginButton}>
           <Text style={styles.loginText}>Login</Text>
         </TouchableOpacity>
         <View style={styles.wrapper}>

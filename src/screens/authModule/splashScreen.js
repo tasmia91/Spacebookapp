@@ -18,7 +18,7 @@ const SplashScreen = ({navigation}) => {
     <View style={[globalStyles.container, styles.localContainer]}>
       <View style={styles.headerWrapper}>
         <Image
-          source={require('../../images/astro.jpeg')}
+          source={require('../../images/astronaut-3.png')}
           resizeMode={'contain'}
           style={{
             height: hp(8),
