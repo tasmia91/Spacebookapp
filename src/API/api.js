@@ -17,3 +17,11 @@ export async function registerApi(data) {
     data: data,
   });
 }
+
+export async function logoutApi(data) {
+  return await axios({
+    method: 'POST',
+    url: api + 'logout',
+    data: data,
+  });
+}

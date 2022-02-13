@@ -1,21 +1,15 @@
 import React from 'react';
-import {
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-  Image,
-  ScrollView,
-} from 'react-native';
+import {StyleSheet, TextInput, View, Image, ScrollView} from 'react-native';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
+import globalStyles from '../../styles/globalStyles';
 import {colors} from '../../colors/colors';
 
 const SearchScreen = ({navigation}) => {
   return (
-    <ScrollView style={[styles.localContainer]}>
+    <ScrollView style={[globalStyles.container, styles.localContainer]}>
       <View style={styles.formWrapper}>
         {/* First name */}
         <View style={styles.fieldWrapper}>
@@ -28,7 +22,7 @@ const SearchScreen = ({navigation}) => {
               marginRight: wp(3),
             }}
           />
-          <TextInput placeholder="Search" />
+          <TextInput style={{paddingVertical: hp(0.5)}} placeholder="Search" />
         </View>
       </View>
     </ScrollView>

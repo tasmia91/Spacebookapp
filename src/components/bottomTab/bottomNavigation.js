@@ -13,11 +13,12 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import LoginScreen from '../../screens/authModule/loginScreen';
-import RegisterScreen from '../../screens/authModule/registerScreen';
-import SearchScreen from '../../screens/authModule/searchScreen';
-import NotificationsScreen from '../../screens/authModule/notificationsScreen';
 import {colors} from '../../colors/colors';
+import {ProfileStackScreen} from '../stacks/profileStack';
+import {HomeStackScreen} from '../stacks/homeStack';
+import {PostStackScreen} from '../stacks/postStack';
+import {SearchStackScreen} from '../stacks/searchStack';
+import {NotificationStackScreen} from '../stacks/notificationStack';
 
 const Tab = createBottomTabNavigator();
 
@@ -30,7 +31,7 @@ export default function MyTabs() {
       }}>
       <Tab.Screen
         name="homeScreen"
-        component={LoginScreen}
+        component={HomeStackScreen}
         options={{
           tabBarIcon: ({focused}) => (
             <View
@@ -77,7 +78,7 @@ export default function MyTabs() {
       />
       <Tab.Screen
         name="post"
-        component={RegisterScreen}
+        component={PostStackScreen}
         options={{
           tabBarIcon: ({focused}) => (
             <View
@@ -124,7 +125,7 @@ export default function MyTabs() {
       />
       <Tab.Screen
         name="search"
-        component={SearchScreen}
+        component={SearchStackScreen}
         options={{
           tabBarIcon: ({focused}) => (
             <View
@@ -171,7 +172,7 @@ export default function MyTabs() {
       />
       <Tab.Screen
         name="notifications"
-        component={NotificationsScreen}
+        component={NotificationStackScreen}
         options={{
           tabBarIcon: ({focused}) => (
             <View
@@ -218,7 +219,7 @@ export default function MyTabs() {
       />
       <Tab.Screen
         name="profile"
-        component={RegisterScreen}
+        component={ProfileStackScreen}
         options={{
           tabBarIcon: ({focused}) => (
             <View
