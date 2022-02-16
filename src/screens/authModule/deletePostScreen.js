@@ -6,41 +6,23 @@ import {
 } from 'react-native-responsive-screen';
 import globalStyles from '../../styles/globalStyles';
 import {colors} from '../../colors/colors';
-import {loginApi} from '../../API/api';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Context} from '../../../App';
 
-const LogoutScreen = ({navigation}) => {
+const DeletePostScreen = ({navigation}) => {
   const {isUser, setUser} = useContext(Context);
 
-  const logout = () => {
-    setUser(false);
-    AsyncStorage.removeItem('token');
-  };
   return (
     <View style={[globalStyles.container, styles.localContainer]}>
-      <View style={styles.headerWrapper}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Image
-            source={require('../../images/icons/back.png')}
-            resizeMode={'contain'}
-            style={{
-              height: hp(2.5),
-              width: hp(2.5),
-            }}
-          />
-        </TouchableOpacity>
-        <Text style={styles.headerTitle}>Logout</Text>
-      </View>
-
       <View style={styles.settingsWrapper}>
         <View>
-          <Text style={styles.option}>Are you sure you want to logout?</Text>
+          <Text style={styles.option}>
+            Are you sure you want to delete post?
+          </Text>
         </View>
         <View style={styles.buttons}>
           <View style={styles.logoutButton}>
             <TouchableOpacity activeOpacity={0.5} onPress={() => logout()}>
-              <Text style={styles.text}>Logout</Text>
+              <Text style={styles.text}>Delete</Text>
             </TouchableOpacity>
           </View>
           <View style={styles.cancelButton}>
@@ -111,4 +93,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LogoutScreen;
+export default DeletePostScreen;

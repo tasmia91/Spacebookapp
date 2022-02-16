@@ -14,20 +14,41 @@ import LoginScreen from './src/screens/authModule/loginScreen';
 import {AuthStackScreens} from './src/components/stacks/authStack';
 import SplashScreen from './src/screens/authModule/splashScreen';
 import MyTabs from './src/components/bottomTab/bottomNavigation';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+export const Context = React.createContext();
 
 const App = () => {
   const [splash, setSplash] = useState(true);
+  const [isUser, setUser] = useState(false);
 
   useEffect(() => {
+    getToken();
     setTimeout(() => {
       setSplash(false);
     }, 1000);
   }, []);
+
+  const getToken = async () => {
+    const token = await AsyncStorage.getItem('token');
+    if (token) {
+      setUser(true);
+    }
+  };
+
   return (
     <NavigationContainer>
-      <View style={globalStyles.container}>
-        {splash ? <SplashScreen /> : <MyTabs />}
-      </View>
+      <Context.Provider value={{isUser, setUser}}>
+        <View style={globalStyles.container}>
+          {splash ? (
+            <SplashScreen />
+          ) : (
+            <View style={{flex: 1}}>
+              {isUser ? <MyTabs /> : <AuthStackScreens />}
+            </View>
+          )}
+        </View>
+      </Context.Provider>
     </NavigationContainer>
   );
 };

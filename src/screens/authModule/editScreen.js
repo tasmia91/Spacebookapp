@@ -170,8 +170,8 @@ const EditScreen = ({navigation}) => {
         <TouchableOpacity
           onPress={() => edit()}
           activeOpacity={0.5}
-          style={styles.confirmEditButton}>
-          <Text style={styles.editText}>Confirm</Text>
+          style={styles.updateProfileButton}>
+          <Text style={styles.updateText}>Update Profile</Text>
         </TouchableOpacity>
       </View>
     </ScrollView>
@@ -188,14 +188,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
-  editText: {
+  updateText: {
     textAlign: 'center',
     fontFamily: 'Roboto',
     fontWeight: 'bold',
     color: colors.white,
     fontSize: hp(2),
   },
-  confirmEditButton: {
+  updateProfileButton: {
     backgroundColor: colors.blue,
     paddingVertical: hp(1.2),
     borderRadius: hp(1.8),

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {
   TouchableOpacity,
   StyleSheet,
@@ -6,6 +6,7 @@ import {
   TextInput,
   View,
   Image,
+  ActivityIndicator,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -14,15 +15,20 @@ import {
 import globalStyles from '../../styles/globalStyles';
 import {colors} from '../../colors/colors';
 import {loginApi} from '../../API/api';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {Context} from '../../../App';
 
 const LoginScreen = ({navigation}) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [emailError, setEmailError] = useState('');
+  const {isUser, setUser} = useContext(Context);
+  const [load, setLoad] = useState(false);
 
   const login = async () => {
     if (username && password && !emailError) {
+      setLoad(true);
       setError('');
       const apiData = {
         email: username,
@@ -30,19 +36,20 @@ const LoginScreen = ({navigation}) => {
       };
       try {
         const {data} = await loginApi(apiData);
+        AsyncStorage.setItem('token', data.token);
+        setUser(true);
         console.log(data);
       } catch (e) {
         setError(e.response.data);
+        setLoad(false);
       }
     } else {
       if (!emailError) {
         setError('Please fill in both fields');
+        setLoad(false);
       }
     }
   };
-  setTimeout(() => {
-    setError('');
-  }, 5000);
   return (
     <View style={[globalStyles.container, styles.localContainer]}>
       <View style={styles.headerWrapper}>
@@ -95,12 +102,18 @@ const LoginScreen = ({navigation}) => {
         </View>
       </View>
       <View>
-        <TouchableOpacity
-          onPress={() => login()}
-          activeOpacity={0.5}
-          style={styles.loginButton}>
-          <Text style={styles.loginText}>Login</Text>
-        </TouchableOpacity>
+        {load ? (
+          <View style={styles.loginButton}>
+            <ActivityIndicator size="small" color="white" />
+          </View>
+        ) : (
+          <TouchableOpacity
+            onPress={() => login()}
+            activeOpacity={0.5}
+            style={styles.loginButton}>
+            <Text style={styles.loginText}>Login</Text>
+          </TouchableOpacity>
+        )}
         <View style={styles.wrapper}>
           <Text style={styles.text}>Don't have an account?</Text>
           <TouchableOpacity
