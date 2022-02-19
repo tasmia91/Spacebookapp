@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   TouchableOpacity,
   StyleSheet,
@@ -7,6 +7,7 @@ import {
   View,
   Image,
   ScrollView,
+  ActivityIndicator,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -14,7 +15,7 @@ import {
 } from 'react-native-responsive-screen';
 import globalStyles from '../../styles/globalStyles';
 import {colors} from '../../colors/colors';
-// import {editApi} from '../../API/api';
+import {getUserInformationApi, updateUserInformationApi} from '../../API/api';
 
 const EditScreen = ({navigation}) => {
   const [firstName, setFirstName] = useState('');
@@ -22,45 +23,50 @@ const EditScreen = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [error, setError] = useState('');
   const [emailError, setEmailError] = useState('');
+  const [error, setError] = useState('');
+  const [data, setData] = useState({});
+  const [load, setLoad] = useState(true);
 
-  const edit = async () => {
-    if (
-      firstName &&
-      lastName &&
-      email &&
-      password &&
-      confirmPassword &&
-      !emailError
-    ) {
-      if (password === confirmPassword) {
-        setError('');
-        const apiData = {
-          first_name: firstName,
-          last_name: lastName,
-          email: email,
-          password: password,
-        };
-        try {
-          const {data} = await editApi(apiData);
-          console.log(data);
-        } catch (e) {
-          if (
-            e.response.data ==
-            'Bad request - email must be valid and password greater than 5 characters'
-          ) {
-            setError('Password should be greater than 5 characters');
-          }
-          console.log(e.response.data);
+  useEffect(() => {
+    getUserInformation();
+  }, []);
+
+  const getUserInformation = async () => {
+    try {
+      const {data} = await getUserInformationApi(data);
+      console.log('user info', data);
+      setData(data);
+      setLoad(false);
+    } catch (e) {
+      console.log(e.response.data);
+    }
+  };
+
+  const updateUserInformation = async () => {
+    if (password === confirmPassword) {
+      const apiData = {
+        first_name: firstName == '' ? data.firstName : first_name,
+        last_name: lastName == '' ? data.lastName : last_name,
+        email: email == '' ? data.email : email,
+        password: password == '' ? data.password : password,
+      };
+      try {
+        const {data} = await updateUserInformationApi(apiData);
+        console.log('update', data);
+        if (data == 'OK') {
+          setLoad(true);
+          getUserInformation();
         }
-      } else {
-        setError('Password should match');
+      } catch (e) {
+        console.log(e.response.data);
       }
     } else {
-      if (!emailError) {
-        setError('Please fill in all fields');
-      }
+      setError('Password should match');
+    }
+
+    if (password.length < 5) {
+      setError('Password should be greater than 5 characters');
     }
   };
 
@@ -92,88 +98,90 @@ const EditScreen = ({navigation}) => {
         </View>
       </View>
 
-      <View style={styles.formWrapper}>
-        {error ? <Text style={globalStyles.errorLine}>* {error}</Text> : null}
-        {emailError ? (
-          <Text style={globalStyles.errorLine}>* {emailError}</Text>
-        ) : null}
-        <View style={styles.row}>
-          {/* First name */}
-          <View style={[styles.fieldWrapper, {width: '45%'}]}>
-            <Text style={styles.label}>First Name</Text>
-            <TextInput
-              placeholder="Tasmia"
-              defaultValue={firstName}
-              onChangeText={firstName => {
-                setFirstName(firstName);
-              }}
-            />
-          </View>
-          {/* Last Name */}
-          <View style={[styles.fieldWrapper, {width: '45%'}]}>
-            <Text style={styles.label}>Last Name</Text>
-            <TextInput
-              placeholder="Niazi"
-              defaultValue={lastName}
-              onChangeText={lastName => {
-                setLastName(lastName);
-              }}
-            />
-          </View>
-        </View>
-        {/* Email */}
-        <View style={[styles.fieldWrapper, {paddingTop: hp(2)}]}>
-          <Text style={styles.label}>Email</Text>
-          <TextInput
-            placeholder="tasmia@hotmail.com"
-            defaultValue={email}
-            onChangeText={email => {
-              let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
-              if (reg.test(email) === false) {
-                setEmailError('Please enter a valid email');
-              } else if (email == '') {
-                setEmailError('');
-              } else {
-                setEmailError('');
-                setEmail(email);
-              }
-            }}
-          />
-        </View>
-        {/* Password */}
-        <View style={[styles.fieldWrapper, {paddingTop: hp(2)}]}>
-          <Text style={styles.label}>Password</Text>
-          <TextInput
-            placeholder="*****"
-            defaultValue={password}
-            onChangeText={password => {
-              setPassword(password);
-            }}
-            secureTextEntry={true}
-          />
-        </View>
-        {/* Password */}
-        <View style={[styles.fieldWrapper, {paddingTop: hp(2)}]}>
-          <Text style={styles.label}>Confirm Password</Text>
-          <TextInput
-            placeholder="*****"
-            defaultValue={confirmPassword}
-            onChangeText={confirmPassword => {
-              setConfirmPassword(confirmPassword);
-            }}
-            secureTextEntry={true}
-          />
-        </View>
-      </View>
+      {load ? (
+        <ActivityIndicator size="small" color={colors.pink} />
+      ) : (
+        <>
+          <View style={styles.formWrapper}>
+            {error ? (
+              <Text style={globalStyles.errorLine}>* {error}</Text>
+            ) : null}
 
-      <View>
-        <TouchableOpacity
-          onPress={() => edit()}
-          activeOpacity={0.5}
-          style={styles.updateProfileButton}>
-          <Text style={styles.updateText}>Update Profile</Text>
-        </TouchableOpacity>
-      </View>
+            {emailError ? (
+              <Text style={globalStyles.errorLine}>* {emailError}</Text>
+            ) : null}
+            <View style={styles.row}>
+              <View style={[styles.fieldWrapper, {width: '45%'}]}>
+                <Text style={styles.label}>First Name</Text>
+                <TextInput
+                  onChangeText={firstName => {
+                    setFirstName(firstName);
+                  }}
+                  defaultValue={data.first_name}
+                />
+              </View>
+              <View style={[styles.fieldWrapper, {width: '45%'}]}>
+                <Text style={styles.label}>Last Name</Text>
+                <TextInput
+                  defaultValue={data.last_name}
+                  onChangeText={lastName => {
+                    setLastName(lastName);
+                  }}
+                />
+              </View>
+            </View>
+
+            <View style={[styles.fieldWrapper, {paddingTop: hp(2)}]}>
+              <Text style={styles.label}>Email</Text>
+              <TextInput
+                onChangeText={email => {
+                  let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
+                  if (reg.test(email) === false) {
+                    setEmailError('Please enter a valid email');
+                  } else if (email == '') {
+                    setEmailError('');
+                  } else {
+                    setEmailError('');
+                    setEmail(email);
+                  }
+                }}
+                defaultValue={data.email}
+              />
+            </View>
+
+            <View style={[styles.fieldWrapper, {paddingTop: hp(2)}]}>
+              <Text style={styles.label}>Password</Text>
+              <TextInput
+                onChangeText={password => {
+                  setPassword(password);
+                }}
+                defaultValue={password}
+                secureTextEntry={true}
+              />
+            </View>
+
+            <View style={[styles.fieldWrapper, {paddingTop: hp(2)}]}>
+              <Text style={styles.label}>Confirm Password</Text>
+              <TextInput
+                defaultValue={confirmPassword}
+                onChangeText={confirmPassword => {
+                  setConfirmPassword(confirmPassword);
+                }}
+                secureTextEntry={true}
+              />
+            </View>
+          </View>
+
+          <View>
+            <TouchableOpacity
+              onPress={() => updateUserInformation()}
+              activeOpacity={0.5}
+              style={styles.updateProfileButton}>
+              <Text style={styles.updateText}>Update Profile</Text>
+            </TouchableOpacity>
+          </View>
+        </>
+      )}
     </ScrollView>
   );
 };

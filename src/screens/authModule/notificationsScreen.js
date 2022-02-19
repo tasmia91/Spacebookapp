@@ -8,7 +8,7 @@ import {
 import globalStyles from '../../styles/globalStyles';
 import {colors} from '../../colors/colors';
 
-const NotificationsScreen = ({navigation}) => {
+const NotificationsScreen = () => {
   return (
     <ScrollView style={[globalStyles.container, styles.localContainer]}>
       <View style={styles.headerWrapper}>

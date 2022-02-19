@@ -6,7 +6,6 @@ import {
 } from 'react-native-responsive-screen';
 import globalStyles from '../../styles/globalStyles';
 import {colors} from '../../colors/colors';
-import {loginApi} from '../../API/api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Context} from '../../../App';
 
@@ -37,6 +36,7 @@ const LogoutScreen = ({navigation}) => {
         <View>
           <Text style={styles.option}>Are you sure you want to logout?</Text>
         </View>
+
         <View style={styles.buttons}>
           <View style={styles.logoutButton}>
             <TouchableOpacity activeOpacity={0.5} onPress={() => logout()}>

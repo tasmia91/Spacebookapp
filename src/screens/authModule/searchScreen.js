@@ -1,17 +1,39 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {StyleSheet, TextInput, View, Image, ScrollView} from 'react-native';
+import {createFilter} from 'react-native-search-filter';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import globalStyles from '../../styles/globalStyles';
 import {colors} from '../../colors/colors';
+import {searchFriendsApi} from '../../API/api';
 
 const SearchScreen = ({navigation}) => {
+  const KEYS_TO_FILTERS = ['user_givenname'];
+
+  const [search, setSearch] = useState('');
+  const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    getSearch();
+  }, []);
+
+  const getSearch = async () => {
+    try {
+      const {data} = await searchFriendsApi();
+      console.log('search', data);
+      setUsers(data);
+    } catch (e) {
+      console.log(e.response.data);
+    }
+  };
+
+  const filteredUsers = users.filter(createFilter(search, KEYS_TO_FILTERS));
+
   return (
     <ScrollView style={[globalStyles.container, styles.localContainer]}>
       <View style={styles.formWrapper}>
-        {/* First name */}
         <View style={styles.fieldWrapper}>
           <Image
             source={require('../../images/icons/searchBlue.png')}
@@ -22,7 +44,14 @@ const SearchScreen = ({navigation}) => {
               marginRight: wp(3),
             }}
           />
-          <TextInput style={{paddingVertical: hp(0.5)}} placeholder="Search" />
+          <TextInput
+            defaultValue={search}
+            onChangeText={search => {
+              setSearch(search);
+            }}
+            style={{paddingVertical: hp(0.5)}}
+            placeholder="Search"
+          />
         </View>
       </View>
     </ScrollView>
@@ -34,11 +63,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: wp(4),
     flex: 1,
     paddingVertical: hp(4),
-  },
-  label: {
-    color: colors.pink,
-    fontWeight: '600',
-    fontSize: hp(1.8),
   },
   fieldWrapper: {
     borderWidth: 2,

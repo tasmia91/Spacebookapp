@@ -1,17 +1,8 @@
-import React, {useState, useEffect, useLayoutEffect} from 'react';
-import {
-  ActivityIndicator,
-  Image,
-  StyleSheet,
-  Text,
-  View,
-  SafeAreaView,
-} from 'react-native';
-// stack navigator
+import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {getFocusedRouteNameFromRoute} from '@react-navigation/native';
 import LoginScreen from '../../screens/authModule/loginScreen';
 import RegisterScreen from '../../screens/authModule/registerScreen';
+
 const AuthStack = createNativeStackNavigator();
 
 export const AuthStackScreens = ({navigation, route}) => {

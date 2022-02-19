@@ -1,10 +1,8 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   StyleSheet,
-  Image,
   TouchableOpacity,
   Text,
-  textarea,
   View,
   TextInput,
 } from 'react-native';
@@ -14,8 +12,28 @@ import {
 } from 'react-native-responsive-screen';
 import globalStyles from '../../styles/globalStyles';
 import {colors} from '../../colors/colors';
+import {addPostApi} from '../../API/api';
 
-const PostScreen = ({navigation}) => {
+const PostScreen = () => {
+  const [text, setText] = useState('');
+  const [success, setSuccess] = useState('');
+
+  const addPost = async () => {
+    let apiData = {
+      text: text,
+    };
+
+    try {
+      const {data} = await addPostApi(apiData);
+      console.log('add post', data);
+      if (data) {
+        setSuccess('Posted');
+      }
+    } catch (e) {
+      console.log(e.response.data);
+    }
+  };
+
   return (
     <View style={[globalStyles.container, styles.localContainer]}>
       <View style={styles.headerWrapper}>
@@ -24,6 +42,9 @@ const PostScreen = ({navigation}) => {
       <View style={styles.buttonWrapper}>
         <View style={styles.postWrapper}>
           <TextInput
+            onChangeText={text => {
+              setText(text);
+            }}
             style={{
               textAlignVertical: 'top',
             }}
@@ -35,8 +56,13 @@ const PostScreen = ({navigation}) => {
         </View>
       </View>
 
+      {success ? <Text style={globalStyles.errorLine}>* {success}</Text> : null}
+
       <View style={styles.buttonWrapper}>
-        <TouchableOpacity activeOpacity={0.5} style={styles.postButton}>
+        <TouchableOpacity
+          onPress={() => addPost()}
+          activeOpacity={0.5}
+          style={styles.postButton}>
           <Text style={styles.postText}>Post</Text>
         </TouchableOpacity>
       </View>

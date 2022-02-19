@@ -97,7 +97,6 @@ const RegisterScreen = ({navigation}) => {
           <Text style={globalStyles.errorLine}>* {emailError}</Text>
         ) : null}
         <View style={styles.row}>
-          {/* First name */}
           <View style={[styles.fieldWrapper, {width: '45%'}]}>
             <Text style={styles.label}>First Name</Text>
             <TextInput
@@ -108,7 +107,6 @@ const RegisterScreen = ({navigation}) => {
               }}
             />
           </View>
-          {/* Last Name */}
           <View style={[styles.fieldWrapper, {width: '45%'}]}>
             <Text style={styles.label}>Last Name</Text>
             <TextInput
@@ -120,7 +118,7 @@ const RegisterScreen = ({navigation}) => {
             />
           </View>
         </View>
-        {/* Email */}
+
         <View style={[styles.fieldWrapper, {paddingTop: hp(2)}]}>
           <Text style={styles.label}>Email</Text>
           <TextInput
@@ -139,7 +137,7 @@ const RegisterScreen = ({navigation}) => {
             }}
           />
         </View>
-        {/* Password */}
+
         <View style={[styles.fieldWrapper, {paddingTop: hp(2)}]}>
           <Text style={styles.label}>Password</Text>
           <TextInput
@@ -151,7 +149,7 @@ const RegisterScreen = ({navigation}) => {
             secureTextEntry={true}
           />
         </View>
-        {/* Password */}
+
         <View style={[styles.fieldWrapper, {paddingTop: hp(2)}]}>
           <Text style={styles.label}>Confirm Password</Text>
           <TextInput

@@ -1,5 +1,5 @@
 import React, {useContext} from 'react';
-import {TouchableOpacity, StyleSheet, Text, View, Image} from 'react-native';
+import {TouchableOpacity, StyleSheet, Text, View} from 'react-native';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -7,9 +7,24 @@ import {
 import globalStyles from '../../styles/globalStyles';
 import {colors} from '../../colors/colors';
 import {Context} from '../../../App';
+import {deletePostApi} from '../../API/api';
 
-const DeletePostScreen = ({navigation}) => {
+const DeletePostScreen = ({navigation, route}) => {
   const {isUser, setUser} = useContext(Context);
+  const {postid} = route.params;
+
+  const deletePost = async () => {
+    try {
+      const {data} = await deletePostApi(postid);
+      console.log('delete', data);
+      if (data == 'OK') {
+        navigation.replace('HomeScreen');
+      }
+    } catch (e) {
+      //Does this need e.response.data
+      console.log(e);
+    }
+  };
 
   return (
     <View style={[globalStyles.container, styles.localContainer]}>
@@ -21,7 +36,7 @@ const DeletePostScreen = ({navigation}) => {
         </View>
         <View style={styles.buttons}>
           <View style={styles.logoutButton}>
-            <TouchableOpacity activeOpacity={0.5} onPress={() => logout()}>
+            <TouchableOpacity activeOpacity={0.5} onPress={() => deletePost()}>
               <Text style={styles.text}>Delete</Text>
             </TouchableOpacity>
           </View>
@@ -77,19 +92,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     flex: 1,
-  },
-  headerTitle: {
-    fontFamily: 'Roboto',
-    color: colors.blue,
-    fontWeight: 'bold',
-    fontSize: hp(4),
-    textTransform: 'uppercase',
-    paddingLeft: wp(1),
-  },
-  headerWrapper: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: hp(3),
   },
 });
 

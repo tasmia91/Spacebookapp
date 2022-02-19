@@ -37,6 +37,7 @@ const LoginScreen = ({navigation}) => {
       try {
         const {data} = await loginApi(apiData);
         AsyncStorage.setItem('token', data.token);
+        AsyncStorage.setItem('id', data.id.toString());
         setUser(true);
         console.log(data);
       } catch (e) {
@@ -69,7 +70,6 @@ const LoginScreen = ({navigation}) => {
         {emailError ? (
           <Text style={globalStyles.errorLine}>* {emailError}</Text>
         ) : null}
-        {/* Username */}
         <View style={styles.fieldWrapper}>
           <Text style={styles.label}>Username</Text>
           <TextInput
@@ -88,8 +88,8 @@ const LoginScreen = ({navigation}) => {
             }}
           />
         </View>
-        {/* Password */}
-        <View style={[styles.fieldWrapper, {paddingTop: hp(2)}]}>
+
+        <View style={[styles.fieldWrapper, { paddingTop: hp(2) }]}>
           <Text style={styles.label}>Password</Text>
           <TextInput
             placeholder="*****"
@@ -101,6 +101,7 @@ const LoginScreen = ({navigation}) => {
           />
         </View>
       </View>
+
       <View>
         {load ? (
           <View style={styles.loginButton}>
