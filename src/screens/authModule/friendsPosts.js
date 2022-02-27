@@ -8,42 +8,30 @@ import {
   ScrollView,
   ActivityIndicator,
 } from 'react-native';
-import {useIsFocused} from '@react-navigation/native';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
+import {useIsFocused} from '@react-navigation/native';
 import globalStyles from '../../styles/globalStyles';
 import {colors} from '../../colors/colors';
-import {getPostsApi, likePostApi} from '../../API/api';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import {getPostsApi, likePostApi, removeLikePostApi} from '../../API/api';
 
-const HomeScreen = ({navigation}) => {
+const FriendsPosts = ({navigation, route}) => {
+  const {friendId} = route.params;
+
   const [posts, setPosts] = useState([]);
   const [load, setLoad] = useState(true);
   const [message, setMessage] = useState('');
   const isFocused = useIsFocused();
 
-  //on Load of website will be first thing displayed
   useEffect(() => {
     getPosts();
   }, [isFocused]);
-  //isFocused used to update page with new post
-
-  const likePost = async post_id => {
-    try {
-      const {data} = await likePostApi(post_id);
-      console.log('liked', data);
-    } catch (e) {
-      console.log(e.response.data);
-    }
-  };
 
   const getPosts = async () => {
-    let user_id = await AsyncStorage.getItem('id');
-    user_id = parseInt(user_id);
     try {
-      const {data} = await getPostsApi(user_id);
+      const {data} = await getPostsApi(friendId);
 
       if (data.length == 0) {
         setMessage('No Posts');
@@ -57,18 +45,42 @@ const HomeScreen = ({navigation}) => {
     }
   };
 
+  const likePost = async (post_id, user_id) => {
+    try {
+      const {data} = await likePostApi(post_id, user_id);
+      console.log('liked', data);
+      getPosts();
+    } catch (e) {
+      console.log(e.response.data);
+    }
+  };
+
+  console.log(posts, 'friends posts');
+
+  const removeLikePost = async (post_id, user_id) => {
+    try {
+      const {data} = await removeLikePostApi(post_id, user_id);
+      console.log('Removed', data);
+      getPosts();
+    } catch (e) {
+      console.log(e.response.data);
+    }
+  };
+
   return (
     <View style={[globalStyles.container, styles.localContainer]}>
       <View style={styles.headerWrapper}>
-        <Image
-          source={require('../../images/astronaut-3.png')}
-          resizeMode={'contain'}
-          style={{
-            height: hp(8),
-            width: hp(8),
-          }}
-        />
-        <Text style={styles.headerTitle}>SpaceBook Home</Text>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Image
+            source={require('../../images/icons/back.png')}
+            resizeMode={'contain'}
+            style={{
+              height: hp(2.5),
+              width: hp(2.5),
+            }}
+          />
+        </TouchableOpacity>
+        <Text style={styles.headerTitle}>Friends</Text>
       </View>
 
       {message ? (
@@ -84,14 +96,7 @@ const HomeScreen = ({navigation}) => {
           {posts.map((item, index) => {
             var date = new Date(item.timestamp);
             return (
-              <TouchableOpacity
-                activeOpacity={0.9}
-                style={styles.postWrapper}
-                onPress={() =>
-                  navigation.navigate('PostDetailsScreen', {
-                    post_id: item.post_id,
-                  })
-                }>
+              <TouchableOpacity activeOpacity={0.9} style={styles.postWrapper}>
                 <View style={styles.postHeader}>
                   <Text style={styles.name}>{item.author.first_name}</Text>
                   <Text style={styles.timeStamp}>
@@ -106,7 +111,10 @@ const HomeScreen = ({navigation}) => {
                 <Text style={styles.description}>{item.text}</Text>
                 <View style={styles.likesWrapper}>
                   <TouchableOpacity
-                    onPress={() => likePost(item.post_id)}
+                    onPress={() => {
+                      // removeLikePost(item.post_id, item.author.user_id);
+                      likePost(item.post_id, item.author.user_id);
+                    }}
                     activeOpacity={0.5}>
                     <Image
                       source={require('../../images/icons/like.png')}
@@ -132,6 +140,10 @@ const styles = StyleSheet.create({
   localContainer: {
     paddingHorizontal: wp(4),
     backgroundColor: '#EfEF',
+  },
+  friendsList: {
+    color: colors.pink,
+    fontWeight: 'bold',
   },
   errorMessage: {
     fontSize: hp(3),
@@ -188,4 +200,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default HomeScreen;
+export default FriendsPosts;

@@ -56,15 +56,15 @@ export async function updateUserInformationApi(data) {
 }
 
 //Get a users profile photo
-export async function getProfilePhotoApi(data) {
+export async function getProfilePhotoApi() {
   let user_id = await AsyncStorage.getItem('id');
   user_id = parseInt(user_id);
   let token = await AsyncStorage.getItem('token');
   return await axios({
     method: 'GET',
     url: api + `user/${user_id}/photo`,
-    data: data,
     headers: {
+      'Content-Type': 'image/png',
       'X-Authorization': token,
     },
   });
@@ -80,74 +80,64 @@ export async function uploadProfilePhotoApi(data) {
     url: api + `user/${user_id}/photo`,
     data: data,
     headers: {
+      'Content-Type': 'image/png',
       'X-Authorization': token,
     },
   });
 }
 
 //FRIEND MANAGEMENT
-export async function getFriendsApi(data) {
+export async function getListOfFriendsApi() {
   let user_id = await AsyncStorage.getItem('id');
   user_id = parseInt(user_id);
   let token = await AsyncStorage.getItem('token');
   return await axios({
     method: 'GET',
     url: api + `user/${user_id}/friends`,
-    data: data,
     headers: {
       'X-Authorization': token,
     },
   });
 }
 
-export async function addFriendApi(data) {
-  let user_id = await AsyncStorage.getItem('id');
-  user_id = parseInt(user_id);
+export async function addFriendApi(user_id) {
   let token = await AsyncStorage.getItem('token');
   return await axios({
     method: 'POST',
     url: api + `user/${user_id}/friends`,
-    data: data,
     headers: {
       'X-Authorization': token,
     },
   });
 }
 
-export async function getOutstandingFriendsRequestApi(data) {
+export async function getOutstandingFriendsRequestApi() {
   let token = await AsyncStorage.getItem('token');
   return await axios({
     method: 'GET',
-    url: api + `friendsrequests`,
-    data: data,
+    url: api + `friendrequests`,
     headers: {
       'X-Authorization': token,
     },
   });
 }
 
-export async function acceptFriendRequestApi(data) {
-  let user_id = await AsyncStorage.getItem('id');
-  user_id = parseInt(user_id);
+export async function acceptFriendRequestApi(user_id) {
   let token = await AsyncStorage.getItem('token');
   return await axios({
     method: 'POST',
-    url: api + `friendsrequests/user/${user_id}`,
-    data: data,
+    url: api + `friendrequests/${user_id}`,
     headers: {
       'X-Authorization': token,
     },
   });
 }
 
-export async function rejectFriendRequestApi(data) {
-  let user_id = await AsyncStorage.getItem('id');
-  user_id = parseInt(user_id);
+export async function rejectFriendRequestApi(user_id) {
   let token = await AsyncStorage.getItem('token');
   return await axios({
     method: 'DELETE',
-    url: api + `friendsrequests/user/${user_id}`,
-    data: data,
+    url: api + `friendrequests/${user_id}`,
     headers: {
       'X-Authorization': token,
     },
@@ -166,9 +156,7 @@ export async function searchFriendsApi() {
 }
 
 //POST MANAGEMENT
-export async function getPostsApi() {
-  let user_id = await AsyncStorage.getItem('id');
-  user_id = parseInt(user_id);
+export async function getPostsApi(user_id) {
   let token = await AsyncStorage.getItem('token');
   return await axios({
     method: 'GET',
@@ -233,9 +221,7 @@ export async function updatePostApi(post_id, data) {
   });
 }
 
-export async function likePostApi(post_id) {
-  let user_id = await AsyncStorage.getItem('id');
-  user_id = parseInt(user_id);
+export async function likePostApi(post_id, user_id) {
   let token = await AsyncStorage.getItem('token');
   return await axios({
     method: 'POST',
@@ -246,10 +232,7 @@ export async function likePostApi(post_id) {
   });
 }
 
-//Remove like from post
-export async function RemoveLikePostApi(post_id) {
-  let user_id = await AsyncStorage.getItem('id');
-  user_id = parseInt(user_id);
+export async function removeLikePostApi(post_id, user_id) {
   let token = await AsyncStorage.getItem('token');
   return await axios({
     method: 'DELETE',

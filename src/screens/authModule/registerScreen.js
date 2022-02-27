@@ -45,13 +45,22 @@ const RegisterScreen = ({navigation}) => {
         try {
           const {data} = await registerApi(apiData);
           console.log(data);
+          if (data.id) {
+            navigation.replace('LoginScreen');
+          }
         } catch (e) {
           if (
             e.response.data ==
             'Bad request - email must be valid and password greater than 5 characters'
           ) {
             setError('Password should be greater than 5 characters');
+          } else if (
+            e.response.data ==
+            'Bad Request - database error. Check the log. Possibly duplicate entry?'
+          ) {
+            setError('User already exists');
           }
+
           console.log(e.response.data);
         }
       } else {

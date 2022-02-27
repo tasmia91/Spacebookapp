@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import {TouchableOpacity, StyleSheet, Text, View} from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -6,11 +6,9 @@ import {
 } from 'react-native-responsive-screen';
 import globalStyles from '../../styles/globalStyles';
 import {colors} from '../../colors/colors';
-import {Context} from '../../../App';
 import {deletePostApi} from '../../API/api';
 
 const DeletePostScreen = ({navigation, route}) => {
-  const {isUser, setUser} = useContext(Context);
   const {postid} = route.params;
 
   const deletePost = async () => {
@@ -21,8 +19,7 @@ const DeletePostScreen = ({navigation, route}) => {
         navigation.replace('HomeScreen');
       }
     } catch (e) {
-      //Does this need e.response.data
-      console.log(e);
+      console.log(e.response.data);
     }
   };
 

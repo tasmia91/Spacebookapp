@@ -16,6 +16,7 @@ import {
 import globalStyles from '../../styles/globalStyles';
 import {colors} from '../../colors/colors';
 import {getUserInformationApi, updateUserInformationApi} from '../../API/api';
+import {useIsFocused} from '@react-navigation/native';
 
 const EditScreen = ({navigation}) => {
   const [firstName, setFirstName] = useState('');
@@ -28,9 +29,14 @@ const EditScreen = ({navigation}) => {
   const [data, setData] = useState({});
   const [load, setLoad] = useState(true);
 
+  const isFocused = useIsFocused();
+
   useEffect(() => {
     getUserInformation();
-  }, []);
+    if (isFocused == false) {
+      navigation.replace('ProfileScreen');
+    }
+  }, [isFocused]);
 
   const getUserInformation = async () => {
     try {
@@ -65,7 +71,7 @@ const EditScreen = ({navigation}) => {
       setError('Password should match');
     }
 
-    if (password.length < 5) {
+    if (password && password.length < 5) {
       setError('Password should be greater than 5 characters');
     }
   };

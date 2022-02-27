@@ -1,13 +1,66 @@
-import React from 'react';
-import {TouchableOpacity, StyleSheet, Text, View, Image} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {
+  TouchableOpacity,
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  ActivityIndicator,
+} from 'react-native';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import globalStyles from '../../styles/globalStyles';
 import {colors} from '../../colors/colors';
+import {
+  getListOfFriendsApi,
+  getProfilePhotoApi,
+  getUserInformationApi,
+} from '../../API/api';
 
 const ProfileScreen = ({navigation}) => {
+  const [friends, setFriends] = useState([]);
+  const [userData, setUserData] = useState({});
+  const [load, setLoad] = useState(true);
+  const [photo, setPhoto] = useState('');
+
+  useEffect(() => {
+    getListOfFriends();
+    getUserInformation();
+    getProfilePhoto();
+  }, []);
+
+  const getListOfFriends = async () => {
+    try {
+      const {data} = await getListOfFriendsApi();
+      console.log(data, 'list of friends');
+      setFriends(data);
+    } catch (e) {
+      console.log(e.response.data);
+    }
+  };
+
+  const getUserInformation = async () => {
+    try {
+      const {data} = await getUserInformationApi(data);
+      console.log('user info', data);
+      setUserData(data);
+      setLoad(false);
+    } catch (e) {
+      console.log(e.response.data);
+    }
+  };
+
+  const getProfilePhoto = async () => {
+    try {
+      const {data} = await getProfilePhotoApi();
+      setPhoto(data);
+    } catch (e) {
+      console.log(e.response.data);
+    }
+  };
+
   return (
     <View style={[globalStyles.container, styles.localContainer]}>
       <View style={styles.headerWrapper}>
@@ -24,60 +77,91 @@ const ProfileScreen = ({navigation}) => {
         <Text style={styles.headerTitle}>Profile</Text>
       </View>
 
-      <View style={styles.informationWrapper}>
-        <Image
-          source={require('../../images/icons/profilePhoto.png')}
-          resizeMode={'contain'}
-          style={{
-            height: hp(15),
-            width: hp(15),
-            borderRadius: hp(50),
-          }}
-        />
-        <Text style={styles.name}>Tasmia Niazi</Text>
-        <Text style={styles.email}>tasmia@hotmail.com</Text>
-      </View>
+      {load ? (
+        <ActivityIndicator size="small" color={colors.pink} />
+      ) : (
+        <View>
+          <View style={styles.informationWrapper}>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate('CameraScreen');
+              }}>
+              {photo ? (
+                <Image
+                  source={{uri: 'data:image/png;base64,' + photo}}
+                  resizeMode={'contain'}
+                  style={{
+                    height: hp(15),
+                    width: hp(15),
+                  }}
+                />
+              ) : (
+                <Image
+                  source={require('../../images/icons/profilePhoto.png')}
+                  resizeMode={'contain'}
+                  style={{
+                    height: hp(15),
+                    width: hp(15),
+                    borderRadius: hp(50),
+                  }}
+                />
+              )}
+            </TouchableOpacity>
 
-      <View style={styles.settingsWrapper}>
-        <Image
-          source={require('../../images/icons/settings.png')}
-          resizeMode={'contain'}
-          style={{
-            height: hp(3),
-            width: hp(3),
-            opacity: 0.3,
-          }}
-        />
-        <Text style={styles.label}>Settings</Text>
-      </View>
-
-      <View style={[styles.settingsWrapper, styles.optionsWrapper]}>
-        <Image
-          source={require('../../images/icons/edit.png')}
-          resizeMode={'contain'}
-          style={{
-            height: hp(3),
-            width: hp(3),
-          }}
-        />
-        <TouchableOpacity onPress={() => navigation.navigate('EditScreen')}>
-          <Text style={styles.option}>Edit Profile</Text>
-        </TouchableOpacity>
-      </View>
-
-      <View style={[styles.settingsWrapper, {paddingVertical: hp(2)}]}>
-        <Image
-          source={require('../../images/icons/logout.png')}
-          resizeMode={'contain'}
-          style={{
-            height: hp(3),
-            width: hp(3),
-          }}
-        />
-        <TouchableOpacity onPress={() => navigation.navigate('LogoutScreen')}>
-          <Text style={styles.option}>Logout</Text>
-        </TouchableOpacity>
-      </View>
+            <Text style={styles.name}>
+              {userData.first_name + ' ' + userData.last_name}
+            </Text>
+            <Text style={styles.email}>{userData.email}</Text>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate('FriendsScreen', {
+                  friends: friends,
+                });
+              }}>
+              <Text style={styles.friendsList}>Friends: {friends.length}</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.settingsWrapper}>
+            <Image
+              source={require('../../images/icons/settings.png')}
+              resizeMode={'contain'}
+              style={{
+                height: hp(3),
+                width: hp(3),
+                opacity: 0.3,
+              }}
+            />
+            <Text style={styles.label}>Settings</Text>
+          </View>
+          <View style={[styles.settingsWrapper, styles.optionsWrapper]}>
+            <Image
+              source={require('../../images/icons/edit.png')}
+              resizeMode={'contain'}
+              style={{
+                height: hp(3),
+                width: hp(3),
+              }}
+            />
+            <TouchableOpacity onPress={() => navigation.navigate('EditScreen')}>
+              <Text style={styles.option}>Edit Profile</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={[styles.settingsWrapper, {paddingVertical: hp(2)}]}>
+            <Image
+              source={require('../../images/icons/logout.png')}
+              resizeMode={'contain'}
+              style={{
+                height: hp(3),
+                width: hp(3),
+              }}
+            />
+            <TouchableOpacity
+              onPress={() => navigation.navigate('LogoutScreen')}>
+              <Text style={styles.option}>Logout</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      )}
     </View>
   );
 };
@@ -85,6 +169,10 @@ const ProfileScreen = ({navigation}) => {
 const styles = StyleSheet.create({
   localContainer: {
     paddingHorizontal: wp(4),
+  },
+  friendsList: {
+    color: colors.pink,
+    fontWeight: 'bold',
   },
   optionsWrapper: {
     borderBottomWidth: 1,

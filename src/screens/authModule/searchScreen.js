@@ -1,5 +1,13 @@
 import React, {useEffect, useState} from 'react';
-import {StyleSheet, TextInput, View, Image, ScrollView} from 'react-native';
+import {
+  StyleSheet,
+  TextInput,
+  View,
+  Image,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+} from 'react-native';
 import {createFilter} from 'react-native-search-filter';
 import {
   widthPercentageToDP as wp,
@@ -7,7 +15,7 @@ import {
 } from 'react-native-responsive-screen';
 import globalStyles from '../../styles/globalStyles';
 import {colors} from '../../colors/colors';
-import {searchFriendsApi} from '../../API/api';
+import {addFriendApi, searchFriendsApi} from '../../API/api';
 
 const SearchScreen = ({navigation}) => {
   const KEYS_TO_FILTERS = ['user_givenname'];
@@ -19,10 +27,18 @@ const SearchScreen = ({navigation}) => {
     getSearch();
   }, []);
 
+  const sendRequest = async user_id => {
+    try {
+      const {data} = await addFriendApi(user_id);
+      console.log(data, 'request sent');
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   const getSearch = async () => {
     try {
       const {data} = await searchFriendsApi();
-      console.log('search', data);
       setUsers(data);
     } catch (e) {
       console.log(e.response.data);
@@ -32,7 +48,7 @@ const SearchScreen = ({navigation}) => {
   const filteredUsers = users.filter(createFilter(search, KEYS_TO_FILTERS));
 
   return (
-    <ScrollView style={[globalStyles.container, styles.localContainer]}>
+    <View style={[globalStyles.container, styles.localContainer]}>
       <View style={styles.formWrapper}>
         <View style={styles.fieldWrapper}>
           <Image
@@ -54,7 +70,36 @@ const SearchScreen = ({navigation}) => {
           />
         </View>
       </View>
-    </ScrollView>
+
+      <ScrollView styles={styles.searchResultsWrapper}>
+        {search ? (
+          <View>
+            {filteredUsers.map((item, index) => {
+              return (
+                <View style={styles.searchResult}>
+                  <Text style={styles.searchResultName}>
+                    {item.user_givenname + ' ' + item.user_familyname}
+                  </Text>
+                  <TouchableOpacity
+                    onPress={() => {
+                      sendRequest(item.user_id);
+                    }}>
+                    <Image
+                      source={require('../../images/icons/friendReq.png')}
+                      resizeMode={'contain'}
+                      style={{
+                        width: hp(3),
+                        height: hp(3),
+                      }}
+                    />
+                  </TouchableOpacity>
+                </View>
+              );
+            })}
+          </View>
+        ) : null}
+      </ScrollView>
+    </View>
   );
 };
 
@@ -63,6 +108,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: wp(4),
     flex: 1,
     paddingVertical: hp(4),
+  },
+  searchResult: {
+    paddingVertical: hp(2),
+    borderBottomColor: colors.blue,
+    borderBottomWidth: 1,
+    justifyContent: 'space-between',
+    flexDirection: 'row',
   },
   fieldWrapper: {
     borderWidth: 2,

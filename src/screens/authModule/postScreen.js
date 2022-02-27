@@ -56,7 +56,11 @@ const PostScreen = () => {
         </View>
       </View>
 
-      {success ? <Text style={globalStyles.errorLine}>* {success}</Text> : null}
+      {success ? (
+        <Text style={[globalStyles.errorLine, styles.successMessage]}>
+          {success}
+        </Text>
+      ) : null}
 
       <View style={styles.buttonWrapper}>
         <TouchableOpacity
@@ -76,6 +80,11 @@ const styles = StyleSheet.create({
   },
   buttonWrapper: {
     paddingTop: hp(7),
+  },
+  successMessage: {
+    fontSize: hp(3),
+    textAlign: 'center',
+    paddingTop: hp(4),
   },
   headerWrapper: {
     flexDirection: 'row',
