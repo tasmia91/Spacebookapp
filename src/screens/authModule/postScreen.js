@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   StyleSheet,
   TouchableOpacity,
@@ -13,10 +13,21 @@ import {
 import globalStyles from '../../styles/globalStyles';
 import {colors} from '../../colors/colors';
 import {addPostApi} from '../../API/api';
+import {useIsFocused} from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const PostScreen = () => {
   const [text, setText] = useState('');
   const [success, setSuccess] = useState('');
+
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+    if (isFocused == false) {
+      let message = {text: text};
+      AsyncStorage.setItem('message1', JSON.stringify(message));
+    }
+  }, [isFocused]);
 
   const addPost = async () => {
     let apiData = {
@@ -26,8 +37,12 @@ const PostScreen = () => {
     try {
       const {data} = await addPostApi(apiData);
       console.log('add post', data);
+      setText('');
       if (data) {
         setSuccess('Posted');
+        setTimeout(() => {
+          setSuccess(false);
+        }, 1000);
       }
     } catch (e) {
       console.log(e.response.data);
@@ -42,6 +57,7 @@ const PostScreen = () => {
       <View style={styles.buttonWrapper}>
         <View style={styles.postWrapper}>
           <TextInput
+            defaultValue={text}
             onChangeText={text => {
               setText(text);
             }}
@@ -108,9 +124,9 @@ const styles = StyleSheet.create({
     fontFamily: 'Roboto',
     color: colors.blue,
     fontWeight: 'bold',
-    fontSize: hp(4),
+    fontSize: hp(3),
     textTransform: 'uppercase',
-    paddingLeft: wp(1),
+    paddingLeft: wp(4),
   },
   postWrapper: {
     borderWidth: 3,

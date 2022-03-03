@@ -225,7 +225,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Roboto',
     color: colors.blue,
     fontWeight: 'bold',
-    fontSize: hp(4),
+    fontSize: hp(3),
     textTransform: 'uppercase',
     paddingLeft: wp(4),
   },

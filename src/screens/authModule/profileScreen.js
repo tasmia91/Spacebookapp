@@ -133,6 +133,7 @@ const ProfileScreen = ({navigation}) => {
             />
             <Text style={styles.label}>Settings</Text>
           </View>
+
           <View style={[styles.settingsWrapper, styles.optionsWrapper]}>
             <Image
               source={require('../../images/icons/edit.png')}
@@ -146,6 +147,22 @@ const ProfileScreen = ({navigation}) => {
               <Text style={styles.option}>Edit Profile</Text>
             </TouchableOpacity>
           </View>
+
+          <View style={[styles.settingsWrapper, styles.optionsWrapper]}>
+            <Image
+              source={require('../../images/icons/edit.png')}
+              resizeMode={'contain'}
+              style={{
+                height: hp(3),
+                width: hp(3),
+              }}
+            />
+            <TouchableOpacity
+              onPress={() => navigation.navigate('DraftScreen')}>
+              <Text style={styles.option}>Drafts</Text>
+            </TouchableOpacity>
+          </View>
+
           <View style={[styles.settingsWrapper, {paddingVertical: hp(2)}]}>
             <Image
               source={require('../../images/icons/logout.png')}
@@ -211,9 +228,9 @@ const styles = StyleSheet.create({
     fontFamily: 'Roboto',
     color: colors.blue,
     fontWeight: 'bold',
-    fontSize: hp(4),
+    fontSize: hp(3),
     textTransform: 'uppercase',
-    paddingLeft: wp(1),
+    paddingLeft: wp(4),
   },
   informationWrapper: {
     marginVertical: hp(3),

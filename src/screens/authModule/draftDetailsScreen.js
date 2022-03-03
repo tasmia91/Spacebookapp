@@ -16,48 +16,9 @@ import globalStyles from '../../styles/globalStyles';
 import {colors} from '../../colors/colors';
 import {getSinglePostApi, updatePostApi} from '../../API/api';
 
-const PostDetailsScreen = ({navigation, route}) => {
-  const {post_id} = route.params;
-
-  const [posts, setPosts] = useState({});
+const DraftDetailsScreen = ({navigation}) => {
   const [load, setLoad] = useState(true);
   const [edit, setEdit] = useState(false);
-  const [text, setText] = useState('');
-
-  useEffect(() => {
-    getPosts();
-  }, []);
-
-  const getPosts = async () => {
-    try {
-      const {data} = await getSinglePostApi(post_id);
-      console.log('single posts', data);
-      setPosts(data);
-      setLoad(false);
-    } catch (e) {
-      console.log(e.response.data);
-    }
-  };
-
-  const updatePost = async () => {
-    let apiData = {
-      post_id: post_id,
-      text: text,
-    };
-    try {
-      const {data} = await updatePostApi(post_id, apiData);
-      console.log('update', data);
-      if (data == 'OK') {
-        setEdit(false);
-        setLoad(true);
-        getPosts();
-      }
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
-  let date = new Date(posts.timestamp);
 
   return (
     <View style={[globalStyles.container, styles.localContainer]}>
@@ -81,7 +42,7 @@ const PostDetailsScreen = ({navigation, route}) => {
         <View style={styles.postWrapper}>
           <View style={styles.postHeader}>
             <Text style={styles.name}>
-              {posts.author.first_name + ' ' + posts.author.last_name}
+              {posts.author.first_name + posts.author.last_name}
             </Text>
             <Text style={styles.timeStamp}>
               {date.getDate() +
@@ -262,4 +223,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default PostDetailsScreen;
+export default DraftDetailsScreen;

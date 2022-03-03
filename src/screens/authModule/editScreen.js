@@ -15,7 +15,11 @@ import {
 } from 'react-native-responsive-screen';
 import globalStyles from '../../styles/globalStyles';
 import {colors} from '../../colors/colors';
-import {getUserInformationApi, updateUserInformationApi} from '../../API/api';
+import {
+  getUserInformationApi,
+  updateUserInformationApi,
+  getProfilePhotoApi,
+} from '../../API/api';
 import {useIsFocused} from '@react-navigation/native';
 
 const EditScreen = ({navigation}) => {
@@ -28,11 +32,13 @@ const EditScreen = ({navigation}) => {
   const [error, setError] = useState('');
   const [data, setData] = useState({});
   const [load, setLoad] = useState(true);
+  const [photo, setPhoto] = useState('');
 
   const isFocused = useIsFocused();
 
   useEffect(() => {
     getUserInformation();
+    getProfilePhoto();
     if (isFocused == false) {
       navigation.replace('ProfileScreen');
     }
@@ -44,6 +50,15 @@ const EditScreen = ({navigation}) => {
       console.log('user info', data);
       setData(data);
       setLoad(false);
+    } catch (e) {
+      console.log(e.response.data);
+    }
+  };
+
+  const getProfilePhoto = async () => {
+    try {
+      const {data} = await getProfilePhotoApi();
+      setPhoto(data);
     } catch (e) {
       console.log(e.response.data);
     }
@@ -78,7 +93,7 @@ const EditScreen = ({navigation}) => {
 
   return (
     <ScrollView style={[styles.localContainer]}>
-      <View>
+      <View style={styles.headerWrapper}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Image
             source={require('../../images/icons/back.png')}
@@ -90,24 +105,33 @@ const EditScreen = ({navigation}) => {
             }}
           />
         </TouchableOpacity>
-        <View style={styles.headerWrapper}>
-          <Image
-            source={require('../../images/icons/profilePhoto.png')}
-            resizeMode={'contain'}
-            style={{
-              height: hp(10),
-              width: hp(10),
-              borderRadius: hp(40),
-            }}
-          />
-          <Text style={styles.headerTitle}>Edit</Text>
-        </View>
+        <Text style={styles.headerTitle}>Edit</Text>
       </View>
 
       {load ? (
         <ActivityIndicator size="small" color={colors.pink} />
       ) : (
         <>
+          {photo ? (
+            <Image
+              source={{uri: 'data:image/png;base64,' + photo}}
+              resizeMode={'contain'}
+              style={{
+                height: hp(15),
+                width: hp(15),
+              }}
+            />
+          ) : (
+            <Image
+              source={require('../../images/icons/profilePhoto.png')}
+              resizeMode={'contain'}
+              style={{
+                height: hp(10),
+                width: hp(10),
+                borderRadius: hp(10),
+              }}
+            />
+          )}
           <View style={styles.formWrapper}>
             {error ? (
               <Text style={globalStyles.errorLine}>* {error}</Text>
@@ -228,14 +252,16 @@ const styles = StyleSheet.create({
   headerWrapper: {
     flexDirection: 'row',
     alignItems: 'center',
+    marginTop: hp(2),
   },
   headerTitle: {
     fontFamily: 'Roboto',
     color: colors.blue,
     fontWeight: 'bold',
-    fontSize: hp(4),
+    fontSize: hp(3),
     textTransform: 'uppercase',
     paddingLeft: wp(4),
+    marginTop: hp(-5),
   },
   formWrapper: {
     paddingVertical: hp(5),

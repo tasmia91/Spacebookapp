@@ -21,7 +21,9 @@ const SearchScreen = ({navigation}) => {
   const KEYS_TO_FILTERS = ['user_givenname'];
 
   const [search, setSearch] = useState('');
+  const [message, setMessage] = useState('');
   const [users, setUsers] = useState([]);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     getSearch();
@@ -32,7 +34,31 @@ const SearchScreen = ({navigation}) => {
       const {data} = await addFriendApi(user_id);
       console.log(data, 'request sent');
     } catch (e) {
-      console.log(e);
+      console.log(e.response.data);
+      if (e.response.data == 'User is already added as a friend') {
+        setError('Friends already');
+        setTimeout(() => {
+          setError(false);
+        }, 1000);
+      } else if (
+        e.response.data ==
+        'A request has already been submitted. Check your friend requests.'
+      ) {
+        setError('Request already submitted.');
+        setTimeout(() => {
+          setError(false);
+        }, 1000);
+      } else if (e.response.data == 'Request submitted request sent') {
+        setError('Request sent.');
+        setTimeout(() => {
+          setError(false);
+        }, 1000);
+      } else {
+        setError('Sorry please try again later');
+        setTimeout(() => {
+          setError(false);
+        }, 1000);
+      }
     }
   };
 
@@ -50,6 +76,7 @@ const SearchScreen = ({navigation}) => {
   return (
     <View style={[globalStyles.container, styles.localContainer]}>
       <View style={styles.formWrapper}>
+        {error ? <Text style={globalStyles.errorLine}>* {error}</Text> : null}
         <View style={styles.fieldWrapper}>
           <Image
             source={require('../../images/icons/searchBlue.png')}

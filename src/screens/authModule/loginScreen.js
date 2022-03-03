@@ -89,7 +89,7 @@ const LoginScreen = ({navigation}) => {
           />
         </View>
 
-        <View style={[styles.fieldWrapper, { paddingTop: hp(2) }]}>
+        <View style={[styles.fieldWrapper, {paddingTop: hp(2)}]}>
           <Text style={styles.label}>Password</Text>
           <TextInput
             placeholder="*****"
@@ -174,7 +174,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Roboto',
     color: colors.blue,
     fontWeight: 'bold',
-    fontSize: hp(4),
+    fontSize: hp(3),
     textTransform: 'uppercase',
     paddingLeft: wp(4),
   },

@@ -6,6 +6,8 @@ import LogoutScreen from '../../screens/authModule/logoutScreen';
 import FriendsScreen from '../../screens/authModule/friendsScreen';
 import FriendsPosts from '../../screens/authModule/friendsPosts';
 import CameraScreen from '../../screens/authModule/cameraScreen';
+import DraftScreen from '../../screens/authModule/draftScreen';
+import DraftDetailsScreen from '../../screens/authModule/draftDetailsScreen';
 
 const ProfileStack = createNativeStackNavigator();
 
@@ -40,6 +42,16 @@ export const ProfileStackScreen = ({navigation, route}) => {
       <ProfileStack.Screen
         name="CameraScreen"
         component={CameraScreen}
+        options={{headerShown: false}}
+      />
+      <ProfileStack.Screen
+        name="DraftScreen"
+        component={DraftScreen}
+        options={{headerShown: false}}
+      />
+      <ProfileStack.Screen
+        name="DraftDetailsScreen"
+        component={DraftDetailsScreen}
         options={{headerShown: false}}
       />
     </ProfileStack.Navigator>
