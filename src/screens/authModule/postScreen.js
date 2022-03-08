@@ -23,17 +23,27 @@ const PostScreen = () => {
   const isFocused = useIsFocused();
 
   useEffect(() => {
-    if (isFocused == false) {
-      let message = {text: text};
-      AsyncStorage.setItem('message1', JSON.stringify(message));
-    }
+    localStorage();
   }, [isFocused]);
+
+  const localStorage = async () => {
+    if (isFocused == false && text != '') {
+      let list = await AsyncStorage.getItem('localStorage');
+      list = JSON.parse(list);
+      console.log(list.length);
+      let message = {text: text};
+      list.push(message);
+      console.log(list, 'after push');
+      // console.log(message, 'message');
+      // await AsyncStorage.setItem('message1', JSON.stringify(message));
+      setText('');
+    }
+  };
 
   const addPost = async () => {
     let apiData = {
       text: text,
     };
-
     try {
       const {data} = await addPostApi(apiData);
       console.log('add post', data);

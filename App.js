@@ -23,6 +23,7 @@ const App = () => {
   const [isUser, setUser] = useState(false);
 
   useEffect(() => {
+    settingLocalStorage();
     getToken();
     setTimeout(() => {
       setSplash(false);
@@ -35,6 +36,18 @@ const App = () => {
       setUser(true);
     }
   };
+
+  const settingLocalStorage = async () => {
+    let storage = await AsyncStorage.getItem('localStorage');
+    storage = JSON.parse(storage);
+    console.log(storage, 'app.js');
+    if (storage.length == 0) {
+      const list = [];
+      await AsyncStorage.setItem('localStorage', JSON.stringify(list));
+    }
+  };
+
+  // AsyncStorage.removeItem('localStorage');
 
   return (
     <NavigationContainer>

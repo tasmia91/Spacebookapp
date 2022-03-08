@@ -19,7 +19,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const DraftScreen = ({navigation}) => {
   useEffect(() => {
-    // getPosts();
+    draftMessage();
   }, [isFocused]);
 
   const [posts, setPosts] = useState([]);
@@ -28,12 +28,15 @@ const DraftScreen = ({navigation}) => {
   const [draft, setDraft] = useState('');
   const isFocused = useIsFocused();
 
-  try {
-    const draft = AsyncStorage.getItem('message1');
-    console.log(JSON.parse(draft));
-  } catch (e) {
-    console.log('error retrieving data');
-  }
+  const draftMessage = async () => {
+    try {
+
+      const draft = await AsyncStorage.getItem('message1');
+      console.log(JSON.parse(draft));
+    } catch (e) {
+      console.log('error retrieving data');
+    }
+  };
 
   return (
     <View style={[globalStyles.container, styles.localContainer]}>

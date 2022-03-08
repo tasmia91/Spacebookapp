@@ -17,7 +17,7 @@ import {colors} from '../../colors/colors';
 import {getSinglePostApi, updatePostApi} from '../../API/api';
 
 const DraftDetailsScreen = ({navigation}) => {
-  const [load, setLoad] = useState(true);
+  // const [load, setLoad] = useState(true);
   const [edit, setEdit] = useState(false);
 
   return (
@@ -33,106 +33,55 @@ const DraftDetailsScreen = ({navigation}) => {
             }}
           />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Post</Text>
+        <Text style={styles.headerTitle}>Drafts</Text>
       </View>
-
-      {load ? (
+      {/* {load ? (
         <ActivityIndicator size="small" color={colors.pink} />
-      ) : (
-        <View style={styles.postWrapper}>
-          <View style={styles.postHeader}>
-            <Text style={styles.name}>
-              {posts.author.first_name + posts.author.last_name}
-            </Text>
-            <Text style={styles.timeStamp}>
-              {date.getDate() +
-                '/' +
-                (date.getMonth() + 1) +
-                '/' +
-                date.getFullYear()}
-            </Text>
-          </View>
+      ) : ( */}
+      <View style={styles.postWrapper}>
+        <View style={styles.postHeader}></View>
 
-          <Text style={styles.email}>{posts.author.email}</Text>
-          <Text style={styles.description}>{posts.text}</Text>
+        <View style={styles.icons}>
+          <TouchableOpacity
+            onPress={() => {
+              setEdit(!edit);
+            }}>
+            <Image
+              source={require('../../images/icons/save.png')}
+              resizeMode={'contain'}
+              style={{
+                height: hp(4),
+                width: hp(4),
+              }}
+            />
+          </TouchableOpacity>
 
-          <View style={styles.likesWrapper}>
-            <TouchableOpacity>
-              <Image
-                source={require('../../images/icons/like.png')}
-                resizeMode={'contain'}
-                style={{
-                  height: hp(3),
-                  width: hp(3),
-                }}
-              />
-            </TouchableOpacity>
-            <Text style={styles.likes}>{posts.numLikes}</Text>
-          </View>
-
-          <View style={styles.icons}>
-            <TouchableOpacity
-              onPress={() => {
-                setEdit(!edit);
-              }}>
-              <Image
-                source={require('../../images/icons/edit.png')}
-                resizeMode={'contain'}
-                style={{
-                  height: hp(3),
-                  width: hp(3),
-                }}
-              />
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              activeOpacity={0.9}
-              onPress={() =>
-                navigation.navigate('DeletePostScreen', {postid: post_id})
-              }>
-              <Image
-                source={require('../../images/icons/delete.png')}
-                resizeMode={'contain'}
-                style={{
-                  height: hp(3),
-                  width: hp(3),
-                }}
-              />
-            </TouchableOpacity>
-          </View>
+          <TouchableOpacity>
+            <Image
+              source={require('../../images/icons/delete.png')}
+              resizeMode={'contain'}
+              style={{
+                height: hp(4),
+                width: hp(4),
+              }}
+            />
+          </TouchableOpacity>
         </View>
-      )}
-
+      </View>
+      {/* )} */}
       {edit ? (
         <View>
           <View style={styles.buttonWrapper}>
-            <View style={styles.postWrapper}>
-              <TextInput
-                onChangeText={text => {
-                  setText(text);
-                }}
-                defaultValue={posts.text}
-                style={{
-                  textAlignVertical: 'top',
-                }}
-                placeholder="Add Text"
-                multiline
-                numberOfLines={6}
-                textAlignVertical="top"
-              />
-            </View>
-          </View>
-
-          <View style={styles.buttonWrapper}>
-            <TouchableOpacity
-              onPress={() => updatePost()}
-              activeOpacity={0.5}
-              style={styles.postButton}>
-              <Text style={styles.postText}>Update Post</Text>
-            </TouchableOpacity>
+            <View style={styles.postWrapper}></View>
           </View>
         </View>
       ) : null}
+
+      <View style={styles.buttonWrapper}>
+        <TouchableOpacity activeOpacity={0.5} style={styles.postButton}>
+          <Text style={styles.postText}>Post Draft</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -143,7 +92,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#EfEF',
   },
   buttonWrapper: {
-    paddingTop: hp(7),
+    paddingTop: hp(50),
   },
   postText: {
     textAlign: 'center',
