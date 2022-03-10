@@ -31,12 +31,25 @@ const PostScreen = () => {
       let list = await AsyncStorage.getItem('localStorage');
       list = JSON.parse(list);
       console.log(list.length);
-      let message = {text: text};
-      list.push(message);
-      console.log(list, 'after push');
-      // console.log(message, 'message');
-      // await AsyncStorage.setItem('message1', JSON.stringify(message));
-      setText('');
+      if (list.length == 0) {
+        let message = {
+          text: text,
+          id: 1,
+        };
+        list.push(message);
+        console.log(list, 'after push');
+        console.log(list.length);
+        await AsyncStorage.setItem('localStorage', JSON.stringify(list));
+        setText('');
+      } else {
+        let finalIndex = list[list.length - 1];
+        let message = {text: text, id: finalIndex.id + 1};
+        list.push(message);
+        console.log(list, 'after push');
+        console.log(list.length);
+        await AsyncStorage.setItem('localStorage', JSON.stringify(list));
+        setText('');
+      }
     }
   };
 

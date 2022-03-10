@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
+import {View, StyleSheet, TouchableOpacity, Image} from 'react-native';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
@@ -72,7 +72,6 @@ const CameraScreen = ({navigation}) => {
 
 const styles = StyleSheet.create({
   localContainer: {
-    // paddingHorizontal: wp(4),
     flex: 1,
   },
   preview: {

@@ -97,7 +97,7 @@ const ProfileScreen = ({navigation}) => {
                 />
               ) : (
                 <Image
-                  source={require('../../images/icons/profilePhoto.png')}
+                  source={require('../../images/icons/profileBlue.png')}
                   resizeMode={'contain'}
                   style={{
                     height: hp(15),

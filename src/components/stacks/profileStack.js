@@ -8,6 +8,7 @@ import FriendsPosts from '../../screens/authModule/friendsPosts';
 import CameraScreen from '../../screens/authModule/cameraScreen';
 import DraftScreen from '../../screens/authModule/draftScreen';
 import DraftDetailsScreen from '../../screens/authModule/draftDetailsScreen';
+// import DeleteDraftScreen from '../../screens/authModule/deleteDraftScreen';
 
 const ProfileStack = createNativeStackNavigator();
 
@@ -54,6 +55,11 @@ export const ProfileStackScreen = ({navigation, route}) => {
         component={DraftDetailsScreen}
         options={{headerShown: false}}
       />
+      {/* <ProfileStack.Screen
+        name="DeleteDraftScreen"
+        component={DeleteDraftScreen}
+        options={{headerShown: false}}
+      /> */}
     </ProfileStack.Navigator>
   );
 };

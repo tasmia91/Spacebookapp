@@ -55,7 +55,6 @@ export async function updateUserInformationApi(data) {
   });
 }
 
-//Get a users profile photo
 export async function getProfilePhotoApi() {
   let user_id = await AsyncStorage.getItem('id');
   user_id = parseInt(user_id);
@@ -70,7 +69,6 @@ export async function getProfilePhotoApi() {
   });
 }
 
-//Upload a profile photo
 export async function uploadProfilePhotoApi(data) {
   let user_id = await AsyncStorage.getItem('id');
   user_id = parseInt(user_id);

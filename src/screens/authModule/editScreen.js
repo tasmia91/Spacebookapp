@@ -123,7 +123,7 @@ const EditScreen = ({navigation}) => {
             />
           ) : (
             <Image
-              source={require('../../images/icons/profilePhoto.png')}
+              source={require('../../images/icons/profileBlue.png')}
               resizeMode={'contain'}
               style={{
                 height: hp(10),
@@ -225,13 +225,6 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-  },
-  updateText: {
-    textAlign: 'center',
-    fontFamily: 'Roboto',
-    fontWeight: 'bold',
-    color: colors.white,
-    fontSize: hp(2),
   },
   updateProfileButton: {
     backgroundColor: colors.blue,

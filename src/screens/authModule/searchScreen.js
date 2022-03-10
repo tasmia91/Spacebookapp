@@ -21,7 +21,6 @@ const SearchScreen = ({navigation}) => {
   const KEYS_TO_FILTERS = ['user_givenname'];
 
   const [search, setSearch] = useState('');
-  const [message, setMessage] = useState('');
   const [users, setUsers] = useState([]);
   const [error, setError] = useState('');
 

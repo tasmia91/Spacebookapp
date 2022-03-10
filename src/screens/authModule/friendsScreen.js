@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {
   TouchableOpacity,
   StyleSheet,
@@ -13,7 +13,6 @@ import {
 } from 'react-native-responsive-screen';
 import globalStyles from '../../styles/globalStyles';
 import {colors} from '../../colors/colors';
-import {getListOfFriendsApi} from '../../API/api';
 
 const FriendsScreen = ({navigation, route}) => {
   const {friends} = route.params;
@@ -67,10 +66,6 @@ const styles = StyleSheet.create({
   localContainer: {
     paddingHorizontal: wp(4),
   },
-  friendsList: {
-    color: colors.pink,
-    fontWeight: 'bold',
-  },
   image: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -84,34 +79,6 @@ const styles = StyleSheet.create({
     color: colors.black,
     paddingLeft: hp(1),
   },
-  optionsWrapper: {
-    borderBottomWidth: 1,
-    borderBottomColor: '#00000020',
-    paddingVertical: hp(2),
-  },
-  option: {
-    color: colors.black,
-    fontSize: hp(1.8),
-    marginLeft: hp(1),
-  },
-  label: {
-    color: '#00000050',
-    fontWeight: 'bold',
-    marginLeft: hp(1),
-  },
-  settingsWrapper: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  name: {
-    color: colors.black,
-    fontSize: hp(2),
-    marginTop: hp(2),
-  },
-  email: {
-    color: '#00000070',
-    fontSize: hp(2),
-  },
   headerWrapper: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -124,12 +91,6 @@ const styles = StyleSheet.create({
     fontSize: hp(3),
     textTransform: 'uppercase',
     paddingLeft: wp(4),
-  },
-  informationWrapper: {
-    marginVertical: hp(3),
-    borderBottomWidth: 1,
-    borderBottomColor: '#00000020',
-    paddingBottom: hp(1),
   },
 });
 

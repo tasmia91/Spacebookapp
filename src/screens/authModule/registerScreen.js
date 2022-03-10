@@ -102,9 +102,11 @@ const RegisterScreen = ({navigation}) => {
 
       <View style={styles.formWrapper}>
         {error ? <Text style={globalStyles.errorLine}>* {error}</Text> : null}
+
         {emailError ? (
           <Text style={globalStyles.errorLine}>* {emailError}</Text>
         ) : null}
+
         <View style={styles.row}>
           <View style={[styles.fieldWrapper, {width: '45%'}]}>
             <Text style={styles.label}>First Name</Text>
@@ -220,14 +222,6 @@ const styles = StyleSheet.create({
   headerWrapper: {
     flexDirection: 'row',
     alignItems: 'center',
-  },
-  headerTitle: {
-    fontFamily: 'Roboto',
-    color: colors.blue,
-    fontWeight: 'bold',
-    fontSize: hp(3),
-    textTransform: 'uppercase',
-    paddingLeft: wp(4),
   },
   formWrapper: {
     paddingVertical: hp(5),

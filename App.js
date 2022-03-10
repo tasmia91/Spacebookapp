@@ -41,10 +41,18 @@ const App = () => {
     let storage = await AsyncStorage.getItem('localStorage');
     storage = JSON.parse(storage);
     console.log(storage, 'app.js');
-    if (storage.length == 0) {
+    if (storage == null) {
+      console.log('create local storage');
       const list = [];
       await AsyncStorage.setItem('localStorage', JSON.stringify(list));
+      console.log('created');
+    } else {
+      console.log('Already created');
     }
+    // if (storage.length == 0) {
+    //   const list = [];
+    //   await AsyncStorage.setItem('localStorage', JSON.stringify(list));
+    // }
   };
 
   // AsyncStorage.removeItem('localStorage');

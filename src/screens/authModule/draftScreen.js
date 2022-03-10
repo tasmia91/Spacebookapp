@@ -18,28 +18,34 @@ import {colors} from '../../colors/colors';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const DraftScreen = ({navigation}) => {
+  const [load, setLoad] = useState(true);
+  const [message, setMessage] = useState('');
+  const [drafts, setDrafts] = useState([]);
+
+  const isFocused = useIsFocused();
+
   useEffect(() => {
     draftMessage();
   }, [isFocused]);
 
-  const [posts, setPosts] = useState([]);
-  // const [load, setLoad] = useState(true);
-  const [message, setMessage] = useState('');
-  const [draft, setDraft] = useState('');
-  const isFocused = useIsFocused();
-
   const draftMessage = async () => {
     try {
-
-      const draft = await AsyncStorage.getItem('message1');
-      console.log(JSON.parse(draft));
+      let draft = await AsyncStorage.getItem('localStorage');
+      draft = JSON.parse(draft);
+      if (draft.length == 0) {
+        setMessage('No drafts');
+      } else {
+        setMessage('');
+      }
+      setDrafts(draft);
+      setLoad(false);
     } catch (e) {
       console.log('error retrieving data');
     }
   };
 
   return (
-    <View style={[globalStyles.container, styles.localContainer]}>
+    <ScrollView style={[globalStyles.container, styles.localContainer]}>
       <View style={styles.headerWrapper}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Image
@@ -53,21 +59,34 @@ const DraftScreen = ({navigation}) => {
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Drafts</Text>
       </View>
+
       {message ? (
         <Text style={[globalStyles.errorLine, styles.errorMessage]}>
           {message}
         </Text>
       ) : null}
 
-      <ScrollView contentContainerStyle={{paddingBottom: hp(10)}}>
-        <TouchableOpacity
-          activeOpacity={0.9}
-          style={styles.postWrapper}
-          onPress={() => navigation.navigate('DraftDetailsScreen', {})}>
-          <Text>{draft}</Text>
-        </TouchableOpacity>
-      </ScrollView>
-    </View>
+      {load ? (
+        <ActivityIndicator size="small" color={colors.pink} />
+      ) : (
+        <ScrollView contentContainerStyle={{paddingBottom: hp(10)}}>
+          {drafts.map((item, index) => {
+            return (
+              <TouchableOpacity
+                activeOpacity={0.9}
+                style={styles.postWrapper}
+                onPress={() =>
+                  navigation.navigate('DraftDetailsScreen', {
+                    item: item,
+                  })
+                }>
+                <Text>{item.text}</Text>
+              </TouchableOpacity>
+            );
+          })}
+        </ScrollView>
+      )}
+    </ScrollView>
   );
 };
 

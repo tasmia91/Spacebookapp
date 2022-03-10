@@ -67,9 +67,11 @@ const LoginScreen = ({navigation}) => {
 
       <View style={styles.formWrapper}>
         {error ? <Text style={globalStyles.errorLine}>* {error}</Text> : null}
+
         {emailError ? (
           <Text style={globalStyles.errorLine}>* {emailError}</Text>
         ) : null}
+
         <View style={styles.fieldWrapper}>
           <Text style={styles.label}>Username</Text>
           <TextInput
@@ -136,9 +138,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     marginTop: hp(2),
-  },
-  text: {
-    fontWeight: 'bold',
   },
   RegisterText: {
     fontWeight: 'bold',

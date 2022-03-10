@@ -197,12 +197,6 @@ const styles = StyleSheet.create({
     borderRadius: hp(1.8),
     elevation: 5,
   },
-  postWrapper: {
-    borderWidth: 3,
-    borderRadius: hp(1.8),
-    borderColor: colors.pink,
-    paddingHorizontal: wp(2),
-  },
   postHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',

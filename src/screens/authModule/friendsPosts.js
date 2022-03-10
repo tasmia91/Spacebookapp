@@ -32,7 +32,6 @@ const FriendsPosts = ({navigation, route}) => {
   const getPosts = async () => {
     try {
       const {data} = await getPostsApi(friendId);
-
       if (data.length == 0) {
         setMessage('No Posts');
       } else {
@@ -140,10 +139,6 @@ const styles = StyleSheet.create({
   localContainer: {
     paddingHorizontal: wp(4),
     backgroundColor: '#EfEF',
-  },
-  friendsList: {
-    color: colors.pink,
-    fontWeight: 'bold',
   },
   errorMessage: {
     fontSize: hp(3),
