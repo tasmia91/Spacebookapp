@@ -4,7 +4,7 @@ import NotificationsScreen from '../../screens/authModule/notificationsScreen';
 
 const NotificationStack = createNativeStackNavigator();
 
-export const NotificationStackScreen = ({navigation, route}) => {
+export const NotificationStackScreen = () => {
   return (
     <NotificationStack.Navigator>
       <NotificationStack.Screen

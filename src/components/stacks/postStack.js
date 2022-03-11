@@ -4,7 +4,7 @@ import PostScreen from '../../screens/authModule/postScreen';
 
 const PostStack = createNativeStackNavigator();
 
-export const PostStackScreen = ({navigation, route}) => {
+export const PostStackScreen = () => {
   return (
     <PostStack.Navigator>
       <PostStack.Screen

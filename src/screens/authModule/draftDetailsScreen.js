@@ -43,7 +43,7 @@ const DraftDetailsScreen = ({navigation, route}) => {
         setTimeout(() => {
           setSuccess(false);
         }, 1000);
-        onDeleteDraft(item.id);
+        handleDeleteDraft(item.id);
       }
     } catch (e) {
       console.log(e.response.data);
@@ -51,13 +51,17 @@ const DraftDetailsScreen = ({navigation, route}) => {
   };
 
   const onDeleteDraft = async id => {
-    let list = await AsyncStorage.getItem('localStorage');
-    list = JSON.parse(list);
-    console.log('list deleted', list, id);
     setSuccess('Deleted');
     setTimeout(() => {
       setSuccess(false);
     }, 1000);
+    handleDeleteDraft(id);
+  };
+
+  const handleDeleteDraft = async id => {
+    let list = await AsyncStorage.getItem('localStorage');
+    list = JSON.parse(list);
+    console.log('list deleted', list, id);
     let delObj = list.find(item => item.id == id);
     const index = list.indexOf(delObj);
     if (index > -1) {

@@ -6,7 +6,7 @@ import DeletePostScreen from '../../screens/authModule/deletePostScreen';
 
 const HomeStack = createNativeStackNavigator();
 
-export const HomeStackScreen = ({navigation, route}) => {
+export const HomeStackScreen = () => {
   return (
     <HomeStack.Navigator>
       <HomeStack.Screen

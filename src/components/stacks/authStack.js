@@ -5,7 +5,7 @@ import RegisterScreen from '../../screens/authModule/registerScreen';
 
 const AuthStack = createNativeStackNavigator();
 
-export const AuthStackScreens = ({navigation, route}) => {
+export const AuthStackScreens = () => {
   return (
     <AuthStack.Navigator>
       <AuthStack.Screen

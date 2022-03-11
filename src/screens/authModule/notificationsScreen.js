@@ -50,6 +50,7 @@ const NotificationsScreen = () => {
       const {data} = await acceptFriendRequestApi(user_id);
       console.log(data, 'accept friend');
       getFriendRequests();
+      setMessage('Accepted');
     } catch (e) {
       console.log(e.response.data);
     }
@@ -60,6 +61,7 @@ const NotificationsScreen = () => {
       const {data} = await rejectFriendRequestApi(user_id);
       console.log(data, 'reject friend requests');
       getFriendRequests();
+      setMessage('Rejected');
     } catch (e) {
       console.log(e.response.data);
     }

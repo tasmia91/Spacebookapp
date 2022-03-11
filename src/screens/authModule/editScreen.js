@@ -67,8 +67,8 @@ const EditScreen = ({navigation}) => {
   const updateUserInformation = async () => {
     if (password === confirmPassword) {
       const apiData = {
-        first_name: firstName == '' ? data.firstName : first_name,
-        last_name: lastName == '' ? data.lastName : last_name,
+        first_name: firstName == '' ? data.firstName : firstName,
+        last_name: lastName == '' ? data.lastName : lastName,
         email: email == '' ? data.email : email,
         password: password == '' ? data.password : password,
       };
@@ -123,7 +123,7 @@ const EditScreen = ({navigation}) => {
             />
           ) : (
             <Image
-              source={require('../../images/icons/profileBlue.png')}
+              source={require('../../images/icons/profilePhoto.png')}
               resizeMode={'contain'}
               style={{
                 height: hp(10),
@@ -225,6 +225,13 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+  },
+  updateText: {
+    textAlign: 'center',
+    fontFamily: 'Roboto',
+    fontWeight: 'bold',
+    color: colors.white,
+    fontSize: hp(2),
   },
   updateProfileButton: {
     backgroundColor: colors.blue,

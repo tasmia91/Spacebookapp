@@ -3,6 +3,7 @@
 This is the User Interface for Spacebook - Mobile App Development Assignment 2021/2022.
 
 I have used React Native CLI. For coding standards and to minimise errors, I have used a built in Eslint plugin: https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint
+I have used Google and airBnB style guides.
 
 To get the UI started, read and follow the following below steps.
 

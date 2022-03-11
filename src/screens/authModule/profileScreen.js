@@ -55,6 +55,7 @@ const ProfileScreen = ({navigation}) => {
   const getProfilePhoto = async () => {
     try {
       const {data} = await getProfilePhotoApi();
+      console.log(data, 'photo data');
       setPhoto(data);
     } catch (e) {
       console.log(e.response.data);
@@ -97,7 +98,7 @@ const ProfileScreen = ({navigation}) => {
                 />
               ) : (
                 <Image
-                  source={require('../../images/icons/profileBlue.png')}
+                  source={require('../../images/icons/profilePhoto.png')}
                   resizeMode={'contain'}
                   style={{
                     height: hp(15),

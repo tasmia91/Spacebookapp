@@ -31,9 +31,11 @@ const SearchScreen = ({navigation}) => {
   const sendRequest = async user_id => {
     try {
       const {data} = await addFriendApi(user_id);
-      console.log(data, 'request sent');
+      setError(e.response.data);
+      setTimeout(() => {
+        setError(false);
+      }, 1000);
     } catch (e) {
-      console.log(e.response.data);
       if (e.response.data == 'User is already added as a friend') {
         setError('Friends already');
         setTimeout(() => {
@@ -44,11 +46,6 @@ const SearchScreen = ({navigation}) => {
         'A request has already been submitted. Check your friend requests.'
       ) {
         setError('Request already submitted.');
-        setTimeout(() => {
-          setError(false);
-        }, 1000);
-      } else if (e.response.data == 'Request submitted request sent') {
-        setError('Request sent.');
         setTimeout(() => {
           setError(false);
         }, 1000);

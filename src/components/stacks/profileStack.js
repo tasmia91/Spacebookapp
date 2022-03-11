@@ -12,7 +12,7 @@ import DraftDetailsScreen from '../../screens/authModule/draftDetailsScreen';
 
 const ProfileStack = createNativeStackNavigator();
 
-export const ProfileStackScreen = ({navigation, route}) => {
+export const ProfileStackScreen = () => {
   return (
     <ProfileStack.Navigator>
       <ProfileStack.Screen
@@ -55,11 +55,6 @@ export const ProfileStackScreen = ({navigation, route}) => {
         component={DraftDetailsScreen}
         options={{headerShown: false}}
       />
-      {/* <ProfileStack.Screen
-        name="DeleteDraftScreen"
-        component={DeleteDraftScreen}
-        options={{headerShown: false}}
-      /> */}
     </ProfileStack.Navigator>
   );
 };

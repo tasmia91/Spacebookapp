@@ -4,7 +4,7 @@ import SearchScreen from '../../screens/authModule/searchScreen';
 
 const SearchStack = createNativeStackNavigator();
 
-export const SearchStackScreen = ({navigation, route}) => {
+export const SearchStackScreen = () => {
   return (
     <SearchStack.Navigator>
       <SearchStack.Screen

@@ -192,6 +192,14 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingVertical: hp(4),
   },
+  headerTitle: {
+    fontFamily: 'Roboto',
+    color: colors.blue,
+    fontWeight: 'bold',
+    fontSize: hp(3),
+    textTransform: 'uppercase',
+    paddingLeft: wp(4),
+  },
   row: {
     flexDirection: 'row',
     justifyContent: 'space-between',

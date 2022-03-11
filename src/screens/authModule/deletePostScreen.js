@@ -19,10 +19,11 @@ const DeletePostScreen = ({navigation, route}) => {
         navigation.replace('HomeScreen');
       }
     } catch (e) {
-      console.log(e.response.data);
+      console.log(e.response);
     }
   };
 
+  console.log(postid, 'post id');
   return (
     <View style={[globalStyles.container, styles.localContainer]}>
       <View style={styles.settingsWrapper}>
